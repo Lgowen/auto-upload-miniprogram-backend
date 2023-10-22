@@ -3,6 +3,11 @@
 /node_modules
 /mp-alipay
 
+/packages/node_modules
+/packages/mp-alipay
+/packages/dist
+
+
 # Logs
 logs
 *.log
