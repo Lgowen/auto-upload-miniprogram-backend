@@ -1,5 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { minidev } from 'minidev';
+import { execSync } from 'child_process';
+
+export const WX_PLATFORM = 'WX_PLATFORM';
+export const ALIPAY_PLATFORM = 'ALIPAY_PLATFORM';
 
 @Injectable()
 export class QrcodeService {
@@ -20,17 +24,38 @@ export class QrcodeService {
     };
     if (!version) return errResult;
 
-    const APP_ID = '2021004100659339';
-    const buildPath = 'mp-alipay';
+    // const APP_ID = '2021004100659339';
+    // const buildPath = 'mp-alipay';
     // const dirname = path.dirname(fileURLToPath(import.meta.url));
     // const buildPath = path.join(dirname, relativePath);
+    const command = `D:\\HBuilderX\\cli.exe open`
     try {
-      const { qrcodeUrl, version } = await minidev.preview({
-        appId: APP_ID, // (对应appid)
-        identityKeyPath: 'config.json', // 身份验证文件
-        project: buildPath, // uniapp打包后的路径
-      });
-      return { code: 0, data: { qrcodeUrl, version }, msg: 'success' };
+      // const { qrcodeUrl, version } = await minidev.preview({
+      //   appId: APP_ID, // (对应appid)
+      //   identityKeyPath: 'config.json', // 身份验证文件
+      //   project: buildPath, // uniapp打包后的路径
+      // });
+      const result = execSync(command);
+
+      console.log(result, 'result')
+
+      setTimeout(() => {
+        const loginCommand = `D:\\HBuilderX\\cli.exe login --username 434666361@qq.com --password Yigeren1!`
+        const loginCommandRes = execSync(loginCommand);
+        console.log(loginCommandRes.toString(), 'loginCommandRes')
+        setTimeout(() => {
+          const openProjectCommand = `D:\\HBuilderX\\cli.exe project open --path D:\\project\\auto-upload-miniprogram-backend\\remote-project\\uni-flower-mall`
+          const openProjectCommandRes = execSync(openProjectCommand)
+          console.log(openProjectCommandRes.toString(), 'openProjectCommandRe11s')
+          setTimeout(() => {
+            const buildCommand = createBuildCommandForALIPAY('uni-flower-mall')
+            const buildCommandRes = execSync(buildCommand);
+            console.log(buildCommandRes.toString(), 'buildCommandRes')
+          }, 1500)
+        }, 1500)
+      }, 1000)
+
+      return { code: 0, data: {}, msg: 'success' };
       // console.log(qrcodeUrl, 'qrcodeUrlqrcodeUrl')
       // console.log(version, 'qrcodeUrlqrcodeUrl')
       // const [imageData, authorization] = await Promise.all([
@@ -66,4 +91,46 @@ export class QrcodeService {
     //   };
     // }
   }
+}
+
+function createBuildCommandForALIPAY(projectName = 'uni-flower-mall') {
+  return `D:\\HBuilderX\\cli.exe publish --platform mp-alipay --project ${projectName}`;
+}
+
+function createBuildCommandForWX(projectName = 'uni-flower-mall') {
+  return `D:\\HBuilderX\\cli.exe publish --platform mp-weixin --project ${projectName}`;
+}
+
+export const platformMap = {
+  WX_PLATFORM: createBuildCommandForWX,
+  ALIPAY_PLATFORM: createBuildCommandForALIPAY,
+};
+
+export async function build(platform) {
+  if (!platformMap[platform]) return 'fail';
+  const command = platformMap[platform]();
+  try {
+    const result = execSync(command);
+
+    if (result.toString().includes('成功' || '')) {
+      console.log('build成功了');
+      return 'success';
+    } else {
+      console.log('build失败了');
+      console.error(result.toString());
+      return 'fail';
+    }
+  } catch (err) {
+    console.error(`命令执行失败：${err.message}`);
+  }
+}
+
+async function executeScript() {
+  const args = process.argv.slice(2);
+  const platform = args[0];
+  const res = await build(platform);
+  if (res === 'fail') {
+    return;
+  }
+  console.log('build完了');
 }
