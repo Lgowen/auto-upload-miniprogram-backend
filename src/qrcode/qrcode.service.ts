@@ -44,11 +44,11 @@ export class QrcodeService {
         const loginCommandRes = execSync(loginCommand);
         console.log(loginCommandRes.toString(), 'loginCommandRes')
         setTimeout(() => {
-          const openProjectCommand = `D:\\HBuilderX\\cli.exe project open --path D:\\project\\auto-upload-miniprogram-backend\\remote-project\\uni-flower-mall`
+          const openProjectCommand = `D:\\HBuilderX\\cli.exe project open --path D:\\project\\auto-upload-miniprogram-backend\\remote-project`
           const openProjectCommandRes = execSync(openProjectCommand)
           console.log(openProjectCommandRes.toString(), 'openProjectCommandRe11s')
           setTimeout(() => {
-            const buildCommand = createBuildCommandForALIPAY('uni-flower-mall')
+            const buildCommand = createBuildCommandForALIPAY('remote-project')
             const buildCommandRes = execSync(buildCommand);
             console.log(buildCommandRes.toString(), 'buildCommandRes')
           }, 1500)

@@ -13,18 +13,18 @@ export class UploadService {
     const command = `D:\\HBuilderX\\cli.exe open`
     const result = execSync(command);
 
-    console.log(result, 'result')
+    console.log(result, 'resu1111111111111lt')
 
     setTimeout(() => {
       const loginCommand = `D:\\HBuilderX\\cli.exe login --username 434666361@qq.com --password Yigeren1!`
       const loginCommandRes = execSync(loginCommand);
-      console.log(loginCommandRes.toString(), 'loginCommandR11es')
+      console.log(loginCommandRes.toString(), 'loginCommandRes')
       setTimeout(() => {
-        const openProjectCommand = `D:\\HBuilderX\\cli.exe project open --path D:\\project\\auto-upload-miniprogram-backend\\remote-project\\uni-flower-mall`
+        const openProjectCommand = `D:\\HBuilderX\\cli.exe project open --path D:\\project\\auto-upload-miniprogram-backend\\remote-project`
         const openProjectCommandRes = execSync(openProjectCommand)
         console.log(openProjectCommandRes.toString(), 'openProjectCommandRe11s')
         setTimeout(() => {
-          const buildCommand = createBuildCommandForALIPAY('uni-flower-mall')
+          const buildCommand = createBuildCommandForALIPAY('remote-project')
           const buildCommandRes = execSync(buildCommand);
           console.log(buildCommandRes.toString(), 'buildCommandRes')
         }, 1500)

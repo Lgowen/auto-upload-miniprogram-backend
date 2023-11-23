@@ -9,7 +9,9 @@ export class UploadController {
   @Post('upload')
   @UseInterceptors(FileInterceptor('name'))
   async uploadFile(@UploadedFile() file: Express.Multer.File, @Body('name') name: string) {
-    this.fileService.handleZipFile(name, file);
+
+    console.log(name, file, 'asdasdas1111111111d')
+    this.fileService.handleZipFile(name, file)
 
     return { message: 'File uploaded successfully' };
   }

@@ -9,7 +9,7 @@ export async function unzipBundle(data: ArrayBuffer) {
     const zip = new AdmZip(data);
     zip.extractAllTo('remote-project');
 
-    process.chdir('remote-project/uni-flower-mall')
+    process.chdir('remote-project')
 
     await exec('npm install')
 
