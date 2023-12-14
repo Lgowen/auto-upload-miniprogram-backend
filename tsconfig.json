@@ -6,6 +6,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true, // 用于处理 ES 模块和 CommonJS 模块之间的互操作性。
     "target": "ES2021",
     "sourceMap": true,
     "outDir": "./dist",
